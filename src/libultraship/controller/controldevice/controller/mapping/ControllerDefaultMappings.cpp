@@ -72,8 +72,15 @@ void ControllerDefaultMappings::SetDefaultSDLButtonToButtonMappings(
     }
 
     Ship::ControllerDefaultMappings::SetDefaultSDLButtonToButtonMappings({
+#ifdef __SWITCH__
+        // Newer devkitPro SDL2 reports the Switch face buttons positionally (Xbox layout), so SDL's "B" is the
+        // button labelled A. Swap them so the labelled A/B buttons act as N64 A/B, as in earlier Switch builds.
+        { BTN_A, { SDL_CONTROLLER_BUTTON_B } },
+        { BTN_B, { SDL_CONTROLLER_BUTTON_A } },
+#else
         { BTN_A, { SDL_CONTROLLER_BUTTON_A } },
         { BTN_B, { SDL_CONTROLLER_BUTTON_B } },
+#endif
         { BTN_L, { SDL_CONTROLLER_BUTTON_LEFTSHOULDER } },
         { BTN_START, { SDL_CONTROLLER_BUTTON_START } },
         { BTN_DUP, { SDL_CONTROLLER_BUTTON_DPAD_UP } },
