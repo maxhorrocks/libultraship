@@ -100,7 +100,9 @@ void Ship::Switch::ImGuiProcessEvent(bool wantsTextInput) {
     ImGuiInputTextState* state = ImGui::GetInputTextState(ImGui::GetActiveID());
     ImGuiIO& io = ImGui::GetIO();
     if (wantsTextInput) {
-        if (!isShowingVirtualKeyboard) {
+        // ImGui only creates the text state for the active widget once it has been processed, so it can be null on
+        // the first frame text input is requested. Wait for it rather than dereferencing null.
+        if (!isShowingVirtualKeyboard && state != nullptr) {
             state->ClearText();
             isShowingVirtualKeyboard = true;
             memset(kbBuffer, 0, sizeof(kbBuffer));
